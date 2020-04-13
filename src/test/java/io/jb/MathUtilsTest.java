@@ -1,4 +1,4 @@
-package io.javabrains;
+package io.jb;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,18 +11,31 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestReporter;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+
+import io.jb.MathUtils;
+
 
 @DisplayName("When running MathUtils")
 class MathUtilsTest {
 	
 	MathUtils mathUtils;
+	TestInfo testInfo;
+	TestReporter testReporter;
 	
 	@BeforeEach
-	void init() {
+	//void init(TestInfo testInfo, TestReporter testReporter) {
+	void init(TestInfo testInfo, TestReporter testReporter) {
+		this.testInfo = testInfo;
+		this.testReporter = testReporter;
 		mathUtils = new MathUtils();
+		testReporter.publishEntry("Junit..in the BeforeEach...Running " + testInfo.getDisplayName() + " with tags " + testInfo.getTags());
 		
 	}
 
@@ -65,12 +78,14 @@ class MathUtilsTest {
 	
 
 	@Test
+	@Tag("Circle")
 	void testComputeCircleArea() {
 		assertEquals(314.1592653589793, mathUtils.computeCircleArea(10), "Should return right circle area");
 	}
 	
 	@Nested
 	@DisplayName("add method [nested]")
+	@Tag("math")
 	class AddNestedTest {
 		
 		@Test
@@ -82,6 +97,7 @@ class MathUtilsTest {
 		@Test
 		@DisplayName("when adding two negative numbers")
 		void testAddNegative() {
+			System.out.println("Running " + testInfo.getDisplayName() + " with tags " + testInfo.getTags());
 			//assertEquals(-2, mathUtils.add(-1, -1), "should return the right sum");
 			int expected = -2;
 			int actual = mathUtils.add(-1, -1);
@@ -93,8 +109,12 @@ class MathUtilsTest {
 	}
 	
 	@RepeatedTest(7)
+	@Tag("Math")
 	@DisplayName("multiply method")
-	void testMultiply() {
+	void testMultiply(RepetitionInfo repetitionInfo) {
+		System.out.println("Running " + testInfo.getDisplayName() + " with tags " + testInfo.getTags());
+		testReporter.publishEntry("Junit...Running " + testInfo.getDisplayName() + " with tags " + testInfo.getTags());
+		System.out.println(repetitionInfo.getCurrentRepetition());
 		//assertEquals(2, mathUtils.multiply(2, 1), "should return correct product");
 		assertAll(
 				() -> assertEquals(4, mathUtils.multiply(2, 2)),
