@@ -1,4 +1,4 @@
-package io.jb;
+package package2;
 
 import static org.junit.Assert.assertTrue;
 
