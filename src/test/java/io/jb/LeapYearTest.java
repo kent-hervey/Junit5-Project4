@@ -13,7 +13,12 @@ public class LeapYearTest {
 	public void isLeapYearTest() throws IOException {
 		LeapYear check = new LeapYear();
 		int inputYear = 2016; 
-		assertTrue("Leap Year", check.isLeapYear(inputYear));
+		assertTrue("Leap Year", check.isLeapYear(inputYear));  //note:  this statement will not compile without below in pom.xml:
+			//		<dependency>
+			//        <groupId>junit</groupId>
+			//        <artifactId>junit</artifactId>
+			//        <version>4.13</version>
+			//        </dependency>
 	}
 	
 	@Test
